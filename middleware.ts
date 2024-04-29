@@ -13,15 +13,24 @@ export default auth((req) => {
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
+  //Allow every single API rout
   if(isApiAuthRoute){
       return null;
   }
+
+  //Check auth route.
   if(isAuthRoute){
       if(isLoggedIn){
         return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
       }
       return null
   }
+
+  if(!isLoggedIn && !isPublicRoute){
+      return Response.redirect(new URL("/auth/login", nextUrl))
+  }
+
+  return null;
 });
 
 // Optionally, don't invoke Middleware on some paths
