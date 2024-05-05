@@ -13,13 +13,22 @@ export const {
     } = NextAuth({    
     callbacks: {
         async session({ session, token }) {
-            console.log({sessionToken: token,session})
+            // console.log({
+            //     sessionToken: token,
+            //     session
+            // })
+
+            if(token.sub && session.user){
+                session.user.id = token.sub;
+            }
+
             return session;
         },
         async jwt({ token }) {
             // Add access_token to the token right after signin
-            token.customField = "You can customField";
-            console.log({ token });
+            // token.customField = "You can customField";
+            // console.log({ token });
+
             return token;
         },
     },
